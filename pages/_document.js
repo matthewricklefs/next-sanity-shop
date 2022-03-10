@@ -1,6 +1,6 @@
 import React from "react";
 import Document, { Head, Html, Main, NextScript } from "next/document";
-import createEmotionServer from "@emotion/server/types/create-instance";
+import createEmotionServer from "@emotion/server/create-instance";
 import createCache from "@emotion/cache";
 
 export default class MyDocument extends Document {
