@@ -11,7 +11,7 @@ function MyApp({
 }) {
   return (
     <CacheProvider value={emotionCache}>
-      <Component {...pageProps} />)
+      <Component {...pageProps} />
     </CacheProvider>
   );
 }
