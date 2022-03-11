@@ -24,13 +24,19 @@ function reducer(state, action) {
         (item) => item._key === newItem._key
       );
       const cartItems = existItem
-        ? state.cart.cartItem.map((item) =>
+        ? state.cart.cartItems.map((item) =>
             item._key === existItem._key ? newItem : item
           )
         : [...state.cart.cartItems, newItem];
       Cookies.set('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     }
+    case 'CART_REMOVE_ITEM':
+      const cartItems = state.cart.cartItems.filter(
+        (item) => item._key !== action.payload._key
+      );
+      Cookies.set('cartItems', JSON.stringify(cartItems));
+      return { ...state, cart: { ...state.cart, cartItems } };
     default:
       return state;
   }
