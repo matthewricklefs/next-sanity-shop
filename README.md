@@ -17,3 +17,11 @@
 4. Publish to github
    1. create / login to github account
    2. push to github from vs code
+5. Create Application Theme
+   1. create classes utility with baseline styles
+   2. creates Layout component as a Theme Wrapper for our application
+6. Connect to Sanity.io
+   1. install sanity
+   2. initialize sanity
+   3. create product model
+   4. insert sample data to product model
