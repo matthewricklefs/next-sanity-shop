@@ -5,6 +5,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Rating,
   Typography,
 } from '@mui/material';
 import NextLink from 'next/link';
@@ -24,9 +25,7 @@ export default function ProductItem({ product }) {
 
           <CardContent>
             <Typography>{product.name}</Typography>
-            <Typography>
-              {product.rating} ({product.numReviews} reviews)
-            </Typography>
+            <Rating value={product.rating} readOnly></Rating>
           </CardContent>
         </CardActionArea>
       </NextLink>
