@@ -1,25 +1,25 @@
 const classes = {
   main: {
     marginTop: 2,
-    minHeight: "80vh",
+    minHeight: '80vh',
   },
   footer: {
     marginTop: 1,
-    textAlign: "center",
+    textAlign: 'center',
   },
   appbar: {
-    backgroundColor: "#203040",
-    "& a": {
-      color: "#ffffff",
+    backgroundColor: '#203040',
+    '& a': {
+      color: '#ffffff',
       marginLeft: 1,
     },
   },
   toolbar: {
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
   },
   brand: {
-    fontWeight: "bold",
-    fontSize: "1.5rem",
+    fontWeight: 'bold',
+    fontSize: '1.5rem',
   },
 };
 
