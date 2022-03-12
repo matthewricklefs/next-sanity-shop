@@ -55,4 +55,6 @@
     2. show cart items badge in header
     3. add login link to header
     4. implement add to cart in home page
-13.
+13. Create Login and Register screen
+    1. create login form
+    2. create register form
