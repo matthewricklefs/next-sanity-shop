@@ -64,6 +64,7 @@ export default function ProductScreen(props) {
       enqueueSnackbar('Sorry, this product is out stock', { variant: 'error' });
       return;
     }
+
     dispatch({
       type: 'CART_ADD_ITEM',
       payload: {
@@ -76,9 +77,11 @@ export default function ProductScreen(props) {
         quantity,
       },
     });
+
     enqueueSnackbar(`${product.name} added to the cart`, {
       variant: 'success',
     });
+
     router.push('/cart');
   };
 

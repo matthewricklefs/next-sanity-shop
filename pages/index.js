@@ -1,8 +1,10 @@
-import Layout from '../components/Layout';
-import { Alert, CircularProgress, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import client from '../utils/client';
+import { Alert, CircularProgress, Grid, Typography } from '@mui/material';
+
+import Layout from '../components/Layout';
 import ProductItem from '../components/ProductItem';
+
+import client from '../utils/client';
 
 export default function Home() {
   const [state, setState] = useState({
