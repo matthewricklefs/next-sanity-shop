@@ -24,8 +24,11 @@ import { Store } from '../utils/Store';
 import { useContext } from 'react';
 import { useSnackbar } from 'notistack';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 
 function CartScreen() {
+  const router = useRouter();
+
   const {
     state: {
       cart: { cartItems },
@@ -166,7 +169,14 @@ function CartScreen() {
                 </ListItem>
 
                 <ListItem>
-                  <Button fullWidth color="primary" variant="contained">
+                  <Button
+                    onClick={() => {
+                      router.push('/shipping');
+                    }}
+                    fullWidth
+                    color="primary"
+                    variant="contained"
+                  >
                     Checkout
                   </Button>
                 </ListItem>
