@@ -13,6 +13,9 @@ const initialState = {
     shippingAddress: Cookies.get('shippingAddress')
       ? JSON.parse(Cookies.get('shippingAddress'))
       : {},
+    paymentMethod: Cookies.get('paymentMethod')
+      ? JSON.parse(Cookies.get('paymentMethod'))
+      : '',
   },
   userInfo: Cookies.get('userInfo')
     ? JSON.parse(Cookies.get('userInfo'))
@@ -42,7 +45,7 @@ function reducer(state, action) {
 
       return { ...state, cart: { ...state.cart, cartItems } };
     }
-    case 'CART_REMOVE_ITEM':
+    case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
         (item) => item._key !== action.payload._key
       );
@@ -50,6 +53,7 @@ function reducer(state, action) {
       Cookies.set('cartItems', JSON.stringify(cartItems));
 
       return { ...state, cart: { ...state.cart, cartItems } };
+    }
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload };
     case 'USER_LOGOUT':
@@ -67,6 +71,14 @@ function reducer(state, action) {
         cart: {
           ...state.cart,
           shippingAddress: action.payload,
+        },
+      };
+    case 'SAVE_PAYMENT_METHOD':
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          paymentMethod: action.payload,
         },
       };
     default:
