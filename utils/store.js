@@ -20,10 +20,8 @@ function reducer(state, action) {
   switch (action.type) {
     case 'DARK_MODE_ON':
       return { ...state, darkMode: true };
-
     case 'DARK_MODE_OFF':
       return { ...state, darkMode: false };
-
     case 'CART_ADD_ITEM': {
       const newItem = action.payload;
 
@@ -49,9 +47,11 @@ function reducer(state, action) {
       Cookies.set('cartItems', JSON.stringify(cartItems));
 
       return { ...state, cart: { ...state.cart, cartItems } };
-
     case 'USER_LOGIN':
       return { ...state, userInfo: action.payload };
+    case 'USER_LOGOUT':
+      return { ...state, userInfo: null };
+
     default:
       return state;
   }
