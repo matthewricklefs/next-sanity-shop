@@ -232,6 +232,17 @@ function PlaceOrderScreen() {
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
+                    <Typography>Tax:</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">${taxPrice}</Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
                     <Typography>Shipping: </Typography>
                   </Grid>
 
