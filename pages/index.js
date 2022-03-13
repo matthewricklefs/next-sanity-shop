@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alert, CircularProgress, Grid, Typography } from '@mui/material';
+import { Alert, CircularProgress, Grid } from '@mui/material';
 
 import Layout from '../components/Layout';
 import ProductItem from '../components/ProductItem';
@@ -34,7 +34,6 @@ export default function Home() {
       try {
         const products = await client.fetch(`*[_type == "product"]`);
         setState({ products, loading: false });
-        console.log(products);
       } catch (err) {
         setState({ loading: false, error: err.message });
       }
