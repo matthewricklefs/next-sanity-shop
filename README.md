@@ -83,3 +83,17 @@
 19. Create Order Screen
     1. create order component
     2. display order information
+20. Transaction Gateway by PayPayl
+    1. generate paypay client id
+    2. create api to return client id
+    3. install react-paypal-js
+    4. use PayPalScriptReducer in index.js
+    5. use usePayPalScriptReducer in Order Screen
+    6. implement loadPaypalScript function
+    7. render paypal button
+    8. implement onApprove payment function
+    9. create pay order api in backend
+21. Display Order History
+    1. create order history component
+    2. load orders of current user
+    3. render orders in the screen
