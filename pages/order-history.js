@@ -24,7 +24,7 @@ function reducer(state, action) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true, error: '' };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, order: action.payload, error: '' };
+      return { ...state, loading: false, orders: action.payload, error: '' };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
@@ -32,8 +32,7 @@ function reducer(state, action) {
   }
 }
 
-// TODO: Why does the order status not update state after paypal is executed?
-// Why does the Order History not generate order details?
+// TODO: Why does the Order History not generate order details?
 
 function OrderHistoryScreen() {
   const { state } = useContext(Store);
@@ -59,6 +58,8 @@ function OrderHistoryScreen() {
         const { data } = await axios.get(`/api/orders/history`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
+
+        console.log('data order history', data);
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {

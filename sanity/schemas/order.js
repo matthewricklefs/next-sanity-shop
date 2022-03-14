@@ -53,12 +53,12 @@ export default {
       type: 'paymentResult',
     },
     {
-      title: 'Order Items',
+      title: 'OrderItems',
       name: 'orderItems',
       type: 'array',
       of: [
         {
-          title: 'Order Item',
+          title: 'OrderItem',
           type: 'orderItem',
         },
       ],
@@ -69,7 +69,7 @@ export default {
       type: 'boolean',
     },
     {
-      title: 'Paid Date',
+      title: 'PaidDate',
       name: 'paidAt',
       type: 'datetime',
     },
