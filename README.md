@@ -3,9 +3,7 @@
 ## Lessons
 
 1. Introduction
-   1. What you will learn
-   2. What you will build
-   3. What Packages you will use
+   1. What you will build
 2. Install Tools
    1. VS Code
    2. Chrome
