@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import styled, { ThemeProvider } from 'styled-components';
 import {
   AppBar,
   Badge,
@@ -37,6 +38,12 @@ import jsCookie from 'js-cookie';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
+
+const StyledContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+`;
 
 export default function Layout({ title, description, children }) {
   const router = useRouter();

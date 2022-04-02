@@ -1,15 +1,22 @@
 import { useContext, useEffect, useState } from 'react';
 import { Alert, CircularProgress, Grid } from '@mui/material';
 
+import styled from 'styled-components';
+import axios from 'axios';
+
 import Layout from '../components/Layout';
 import ProductItem from '../components/ProductItem';
 
 import client from '../utils/client';
 import { Store } from '../utils/Store';
-import axios from 'axios';
 import { urlForThumbnail } from '../utils/image';
+
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
+
+const StyledMainContainer = styled.main`
+  counter-reset: section;
+`;
 
 export default function Home() {
   const {
@@ -74,22 +81,24 @@ export default function Home() {
 
   return (
     <Layout>
-      {loading ? (
-        <CircularProgress />
-      ) : error ? (
-        <Alert variant="danger">{error}</Alert>
-      ) : (
-        <Grid container spacing={3}>
-          {products.map((product) => (
-            <Grid item md={4} key={product.slug}>
-              <ProductItem
-                product={product}
-                addToCartHandler={addToCartHandler}
-              ></ProductItem>
-            </Grid>
-          ))}
-        </Grid>
-      )}
+      <StyledMainContainer className="fillHeight">
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Alert variant="danger">{error}</Alert>
+        ) : (
+          <Grid container spacing={3}>
+            {products.map((product) => (
+              <Grid item md={4} key={product.slug}>
+                <ProductItem
+                  product={product}
+                  addToCartHandler={addToCartHandler}
+                ></ProductItem>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </StyledMainContainer>
     </Layout>
   );
 }

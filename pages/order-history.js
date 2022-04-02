@@ -32,8 +32,6 @@ function reducer(state, action) {
   }
 }
 
-// TODO: Why does the Order History not generate order details?
-
 function OrderHistoryScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
