@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { Alert, CircularProgress, Grid } from '@mui/material';
 
-import styled from 'styled-components';
+import { styled } from '@mui/material/styles';
+import Container from '@mui/material/Container';
 import axios from 'axios';
 
 import Layout from '../components/Layout';
@@ -14,11 +15,15 @@ import { urlForThumbnail } from '../utils/image';
 import { useSnackbar } from 'notistack';
 import { useRouter } from 'next/router';
 
-const StyledMainContainer = styled.main`
+import PropTypes from 'prop-types';
+
+const StyledMainContainer = styled((props) => (
+  <Container componentProps={{ main: { className: 'main' } }} {...props} />
+))`
   counter-reset: section;
 `;
 
-export default function Home() {
+const Home = ({ location }) => {
   const {
     state: { cart },
     dispatch,
@@ -80,7 +85,7 @@ export default function Home() {
   };
 
   return (
-    <Layout>
+    <Layout location={location}>
       <StyledMainContainer className="fillHeight">
         {loading ? (
           <CircularProgress />
@@ -101,4 +106,10 @@ export default function Home() {
       </StyledMainContainer>
     </Layout>
   );
-}
+};
+
+Home.propTypes = {
+  location: PropTypes.object.isRequired,
+};
+
+export default Home;

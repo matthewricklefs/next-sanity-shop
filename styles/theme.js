@@ -1,6 +1,7 @@
 import mixins from './mixins';
+import { createTheme } from '@mui/material/styles';
 
-const theme = {
+const theme = createTheme({
   bp: {
     mobileS: `max-width: 330px`,
     mobileM: `max-width: 400px`,
@@ -14,6 +15,6 @@ const theme = {
   },
 
   mixins,
-};
+});
 
 export default theme;

@@ -1,5 +1,7 @@
 import { createTheme } from '@mui/material/styles';
 import styled, { ThemeProvider } from 'styled-components';
+import { GlobalStyle, theme } from '../styles';
+
 import {
   AppBar,
   Badge,
@@ -18,7 +20,6 @@ import {
   Menu,
   MenuItem,
   Switch,
-  ThemeProvider,
   Toolbar,
   Typography,
   useMediaQuery,
@@ -39,6 +40,8 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import { useSnackbar } from 'notistack';
 
+import Nav from '../components/Nav';
+
 const StyledContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -49,45 +52,49 @@ export default function Layout({ title, description, children }) {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart, userInfo } = state;
+  const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const { enqueueSnackbar } = useSnackbar();
+  const [categories, setCategories] = useState([]);
+  const isDesktop = useMediaQuery('(min-width:600px)');
+  const [query, setQuery] = useState('');
 
-  const theme = createTheme({
-    components: {
-      MuiLink: {
-        defaultProps: {
-          underline: 'hover',
-        },
-      },
-    },
-    typography: {
-      h1: {
-        fontSize: '1.6rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-      h2: {
-        fontSize: '1.4rem',
-        fontWeight: 400,
-        margin: '1rem 0',
-      },
-    },
-    palette: {
-      mode: darkMode ? 'dark' : 'light',
-      primary: {
-        main: '#f0c000',
-      },
-      secondary: {
-        main: '#208080',
-      },
-    },
-  });
+  // const theme = createTheme({
+  //   components: {
+  //     MuiLink: {
+  //       defaultProps: {
+  //         underline: 'hover',
+  //       },
+  //     },
+  //   },
+  //   typography: {
+  //     h1: {
+  //       fontSize: '1.6rem',
+  //       fontWeight: 400,
+  //       margin: '1rem 0',
+  //     },
+  //     h2: {
+  //       fontSize: '1.4rem',
+  //       fontWeight: 400,
+  //       margin: '1rem 0',
+  //     },
+  //   },
+  //   palette: {
+  //     mode: darkMode ? 'dark' : 'light',
+  //     primary: {
+  //       main: '#f0c000',
+  //     },
+  //     secondary: {
+  //       main: '#208080',
+  //     },
+  //   },
+  // });
 
   const darkModeChangeHandler = () => {
     dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
     const newDarkMode = !darkMode;
     jsCookie.set('darkMode', newDarkMode ? 'ON' : 'OFF');
   };
-
-  const [anchorEl, setAnchorEl] = useState(null);
   const loginMenuCloseHandler = (e, redirect) => {
     setAnchorEl(null);
 
@@ -95,11 +102,9 @@ export default function Layout({ title, description, children }) {
       router.push(redirect);
     }
   };
-
   const loginClickHandler = (e) => {
     setAnchorEl(e.currentTarget);
   };
-
   const logoutClickHandler = () => {
     setAnchorEl(null);
     dispatch({ type: 'USER_LOGOUT' });
@@ -109,17 +114,19 @@ export default function Layout({ title, description, children }) {
     jsCookie.remove('paymentMethod');
     router.push('/');
   };
-
-  const [sidebarVisible, setSidebarVisible] = useState(false);
   const sidebarOpenHandler = () => {
     setSidebarVisible(true);
   };
   const sidebarCloseHandler = () => {
     setSidebarVisible(false);
   };
-
-  const { enqueueSnackbar } = useSnackbar();
-  const [categories, setCategories] = useState([]);
+  const queryChangeHandler = (e) => {
+    setQuery(e.target.value);
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    router.push(`/search?query=${query}`);
+  };
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -133,18 +140,6 @@ export default function Layout({ title, description, children }) {
     fetchCategories();
   }, [enqueueSnackbar]);
 
-  const isDesktop = useMediaQuery('(min-width:600px)');
-
-  const [query, setQuery] = useState('');
-  const queryChangeHandler = (e) => {
-    setQuery(e.target.value);
-  };
-
-  const submitHandler = (e) => {
-    e.preventDefault();
-    router.push(`/search?query=${query}`);
-  };
-
   return (
     <>
       <Head>
@@ -157,162 +152,168 @@ export default function Layout({ title, description, children }) {
       </Head>
 
       <ThemeProvider theme={theme}>
+        <GlobalStyle />
+
         <CssBaseline />
-        <AppBar sx={classes.appbar} position="static">
-          <Toolbar sx={classes.toolbar}>
-            <Box display="flex" alignItems="center">
-              <IconButton
-                edge="start"
-                aria-label="open drawer"
-                onClick={sidebarOpenHandler}
-                sx={classes.menuButton}
+
+        <StyledContent>
+          <Nav />
+          <AppBar sx={classes.appbar} position="static">
+            <Toolbar sx={classes.toolbar}>
+              <Box display="flex" alignItems="center">
+                <IconButton
+                  edge="start"
+                  aria-label="open drawer"
+                  onClick={sidebarOpenHandler}
+                  sx={classes.menuButton}
+                >
+                  <MenuIcon sx={classes.navbarButton} />
+                </IconButton>
+
+                <NextLink href="/" passHref>
+                  <Link>
+                    <Typography sx={classes.brand}>Sanity Shopping</Typography>
+                  </Link>
+                </NextLink>
+              </Box>
+
+              <Drawer
+                anchor="left"
+                open={sidebarVisible}
+                onClose={sidebarCloseHandler}
               >
-                <MenuIcon sx={classes.navbarButton} />
-              </IconButton>
-
-              <NextLink href="/" passHref>
-                <Link>
-                  <Typography sx={classes.brand}>Sanity Shopping</Typography>
-                </Link>
-              </NextLink>
-            </Box>
-
-            <Drawer
-              anchor="left"
-              open={sidebarVisible}
-              onClose={sidebarCloseHandler}
-            >
-              <List>
-                <ListItem>
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                  >
-                    <Typography>Shopping by Category</Typography>
-                    <IconButton
-                      aria-label="close"
-                      onClick={sidebarCloseHandler}
+                <List>
+                  <ListItem>
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="space-between"
                     >
-                      <CancelIcon />
+                      <Typography>Shopping by Category</Typography>
+                      <IconButton
+                        aria-label="close"
+                        onClick={sidebarCloseHandler}
+                      >
+                        <CancelIcon />
+                      </IconButton>
+                    </Box>
+                  </ListItem>
+
+                  <Divider light />
+
+                  {categories.map((category) => (
+                    <NextLink
+                      key={category}
+                      href={`/search?category=${category}`}
+                      passHref
+                    >
+                      <ListItem
+                        button
+                        component="a"
+                        onClick={sidebarCloseHandler}
+                      >
+                        <ListItemText primary={category}></ListItemText>
+                      </ListItem>
+                    </NextLink>
+                  ))}
+                </List>
+              </Drawer>
+
+              <Box sx={isDesktop ? classes.visible : classes.hidden}>
+                <form onSubmit={submitHandler}>
+                  <Box sx={classes.searchForm}>
+                    <InputBase
+                      name="query"
+                      sx={classes.searchInput}
+                      placeholder="Search Products"
+                      onChange={queryChangeHandler}
+                    />
+                    <IconButton
+                      type="submit"
+                      sx={classes.searchButton}
+                      aria-label="search"
+                    >
+                      <SearchIcon />
                     </IconButton>
                   </Box>
-                </ListItem>
+                </form>
+              </Box>
 
-                <Divider light />
+              <Box>
+                <Switch
+                  checked={darkMode}
+                  onChange={darkModeChangeHandler}
+                ></Switch>
 
-                {categories.map((category) => (
-                  <NextLink
-                    key={category}
-                    href={`/search?category=${category}`}
-                    passHref
-                  >
-                    <ListItem
-                      button
-                      component="a"
-                      onClick={sidebarCloseHandler}
-                    >
-                      <ListItemText primary={category}></ListItemText>
-                    </ListItem>
-                  </NextLink>
-                ))}
-              </List>
-            </Drawer>
-
-            <Box sx={isDesktop ? classes.visible : classes.hidden}>
-              <form onSubmit={submitHandler}>
-                <Box sx={classes.searchForm}>
-                  <InputBase
-                    name="query"
-                    sx={classes.searchInput}
-                    placeholder="Search Products"
-                    onChange={queryChangeHandler}
-                  />
-                  <IconButton
-                    type="submit"
-                    sx={classes.searchButton}
-                    aria-label="search"
-                  >
-                    <SearchIcon />
-                  </IconButton>
-                </Box>
-              </form>
-            </Box>
-
-            <Box>
-              <Switch
-                checked={darkMode}
-                onChange={darkModeChangeHandler}
-              ></Switch>
-
-              <NextLink href="/cart" passHref>
-                <Link>
-                  <Typography component="span">
-                    {cart.cartItems.length > 0 ? (
-                      <Badge
-                        color="secondary"
-                        badgeContent={cart.cartItems.length}
-                      >
-                        Cart
-                      </Badge>
-                    ) : (
-                      'Cart'
-                    )}
-                  </Typography>
-                </Link>
-              </NextLink>
-
-              {userInfo ? (
-                <>
-                  <Button
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    sx={classes.navbarButton}
-                    onClick={loginClickHandler}
-                  >
-                    {userInfo.name}
-                  </Button>
-
-                  <Menu
-                    id="simple-menu"
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={loginMenuCloseHandler}
-                  >
-                    <MenuItem
-                      onClick={(e) => loginMenuCloseHandler(e, '/profile')}
-                    >
-                      Profile
-                    </MenuItem>
-
-                    <MenuItem
-                      onClick={(e) =>
-                        loginMenuCloseHandler(e, '/order-history')
-                      }
-                    >
-                      Order History
-                    </MenuItem>
-
-                    <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
-                  </Menu>
-                </>
-              ) : (
-                <NextLink href="/login" passHref>
-                  <Link>Login</Link>
+                <NextLink href="/cart" passHref>
+                  <Link>
+                    <Typography component="span">
+                      {cart.cartItems.length > 0 ? (
+                        <Badge
+                          color="secondary"
+                          badgeContent={cart.cartItems.length}
+                        >
+                          Cart
+                        </Badge>
+                      ) : (
+                        'Cart'
+                      )}
+                    </Typography>
+                  </Link>
                 </NextLink>
-              )}
-            </Box>
-          </Toolbar>
-        </AppBar>
 
-        <Container sx={classes.main} component="main">
-          {children}
-        </Container>
+                {userInfo ? (
+                  <>
+                    <Button
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      sx={classes.navbarButton}
+                      onClick={loginClickHandler}
+                    >
+                      {userInfo.name}
+                    </Button>
 
-        <Box sx={classes.footer} component="footer">
-          <Typography>All rights reserved. Sanity Shopping.</Typography>
-        </Box>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={loginMenuCloseHandler}
+                    >
+                      <MenuItem
+                        onClick={(e) => loginMenuCloseHandler(e, '/profile')}
+                      >
+                        Profile
+                      </MenuItem>
+
+                      <MenuItem
+                        onClick={(e) =>
+                          loginMenuCloseHandler(e, '/order-history')
+                        }
+                      >
+                        Order History
+                      </MenuItem>
+
+                      <MenuItem onClick={logoutClickHandler}>Logout</MenuItem>
+                    </Menu>
+                  </>
+                ) : (
+                  <NextLink href="/login" passHref>
+                    <Link>Login</Link>
+                  </NextLink>
+                )}
+              </Box>
+            </Toolbar>
+          </AppBar>
+
+          <Container sx={classes.main} component="main">
+            {children}
+          </Container>
+
+          <Box sx={classes.footer} component="footer">
+            <Typography>All rights reserved. Sanity Shopping.</Typography>
+          </Box>
+        </StyledContent>
       </ThemeProvider>
     </>
   );
